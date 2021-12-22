@@ -67,7 +67,7 @@ const Settings = () => {
 
                                     <div className="input-group mb-3">
                                         <input type="number" name="temperatureValue" className="form-control" id="temperatureValue" defaultValue="20.1" step=".1"/>
-                                        <span className="input-group-text">C°</span> 
+                                        <span className="input-group-text">°C</span> 
                                     </div>
                                 </div>
                                 <div className="col-6 mt-3">

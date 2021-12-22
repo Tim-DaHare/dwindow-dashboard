@@ -10,9 +10,35 @@ interface SensorReading {
     measured_at: string,
 }
 
+const liveWeatherTemperature = 20;
+const liveWeatherType = "Misty";
+const liveWeatherPPM = 214;
+const liveWeatherAirDensity = 64;
+let morningMessage = ""
+
+
 const Chart: React.FC = () => {
     const [sensorData, setSensorData] = useState<SensorReading[]>([]);
+    const [date, setDate] = useState(new Date());
+  
+    function refreshClock() {
+      setDate(new Date());
+      const currentHour = date.getHours();
 
+      if(currentHour < 12) {
+        morningMessage = "Good morning"
+      } else if (currentHour < 18){
+        morningMessage = "Good afternoon"
+      } else{
+        morningMessage = "Good evening"
+      }
+    }
+    useEffect(() => {
+        const timerId = setInterval(refreshClock, 1000);
+        return function cleanup() {
+          clearInterval(timerId);
+        };
+      }, []);
     const data = [
         { name: 'Page A', uv: 1000, pv: 2400, amt: 2400, uvError: [75, 20] },
         { name: 'Page B', uv: 300, pv: 4567, amt: 2400, uvError: [90, 40] },
@@ -94,11 +120,13 @@ const Chart: React.FC = () => {
 
 
     return (
+
+        
         
         <div className="col-xl-12 col-lg-12">
             <div className="card shadow mb-4">
                 <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 className="m-0 font-weight-bold text-primary">Sensor Data Overview</h6>
+                    <h5 className="m-0 font-weight-bold text-primary">Sensor Data Overview</h5>
                     <div className="dropdown no-arrow">
                         {/* <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
@@ -113,8 +141,23 @@ const Chart: React.FC = () => {
                     
                     </div>
                 </div>
-                <div className="row">
-                    <div className="card-body col-md-6 col-sm-12">
+                <div className="row m-0">
+                <div className="col-md-6 col-sm-12 p-2">
+                        <div className="card-body bg-light h-100">
+                            <h2 className="font-weight-bold pl-3 pt-3">{morningMessage}!</h2>
+                            <h1 className="pl-3">{date.toLocaleTimeString("nl-NL")}</h1>
+                            <hr className="sidebar-divider" />
+
+                            <h3 className="font-weight-bold text-info p-3">Live Weather:</h3>
+                            <h5 className="pl-3">{liveWeatherType}</h5>
+                            <h5 className="pl-3">Temperature: {liveWeatherTemperature}°C</h5>
+                            <h5 className="pl-3">Air quality: Good - {liveWeatherPPM}PPM</h5>
+                            <h5 className="pl-3">Air density: {liveWeatherAirDensity}%</h5>
+                        </div>
+                    </div>
+                    <div className="col-md-6 col-sm-12 p-2">
+                    <div className="card-body bg-light h-100">
+                        <h6 className="font-weight-bold text-primary p-3">Temperature (°C)</h6>
                         <div className="chart-area">
                         <ResponsiveContainer height='100%' width='100%'>
                             <LineChart
@@ -125,27 +168,45 @@ const Chart: React.FC = () => {
                                 <Tooltip />
                                 <CartesianGrid stroke="#f5f5f5" />
                                 <Line type="monotone" dataKey="temprature" stroke="#FF5F7E" yAxisId={0} />
-                                <Line type="monotone" dataKey="eco2" stroke="#FFAB4C" yAxisId={1} />
-                                <Line type="monotone" dataKey="tvoc" stroke="#B000B9" yAxisId={2} />
                             </LineChart>
                         </ResponsiveContainer>
                         </div>
                     </div>
-                    <div className="card-body col-md-6 col-sm-12">
-                        <div className="chart-area">
-                        <ResponsiveContainer height='100%' width='100%'>
-                            <LineChart
-                                data={sensorData}
-                                margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                            >
-                                <XAxis dataKey="measured_at"/>
-                                <Tooltip />
-                                <CartesianGrid stroke="#f5f5f5" />
-                                <Line type="monotone" dataKey="temprature" stroke="#FF5F7E" yAxisId={0} />
-                                <Line type="monotone" dataKey="eco2" stroke="#FFAB4C" yAxisId={1} />
-                                <Line type="monotone" dataKey="tvoc" stroke="#B000B9" yAxisId={2} />
-                            </LineChart>
-                        </ResponsiveContainer>
+                    </div>
+                    <div className="col-md-6 col-sm-12 p-2">
+                        <div className="card-body bg-light h-100">
+                            <h6 className="font-weight-bold text-primary p-3">CO<sup>2</sup> concentration (eCO<sup>2</sup>)</h6>
+                            <div className="chart-area">
+                            <ResponsiveContainer height='100%' width='100%'>
+                                <LineChart
+                                    data={sensorData}
+                                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                                >
+                                    <XAxis dataKey="measured_at"/>
+                                    <Tooltip />
+                                    <CartesianGrid stroke="#f5f5f5" />
+                                    <Line type="monotone" dataKey="eco2" stroke="#123234" yAxisId={0} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6 col-sm-12 p-2">
+                        <div className="card-body bg-light h-100">
+                            <h6 className="font-weight-bold text-primary p-3">Air Quality (TVOC)</h6>
+                            <div className="chart-area">
+                            <ResponsiveContainer height='100%' width='100%'>
+                                <LineChart
+                                    data={sensorData}
+                                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                                >
+                                    <XAxis dataKey="measured_at"/>
+                                    <Tooltip />
+                                    <CartesianGrid stroke="#eeeeee" />
+                                    <Line type="monotone" dataKey="tvoc" stroke="#341412" yAxisId={0} />
+                                </LineChart>
+                            </ResponsiveContainer>
+                            </div>
                         </div>
                     </div>
                 </div>
