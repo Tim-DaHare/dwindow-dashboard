@@ -19,9 +19,14 @@ function App() {
                     <hr className="sidebar-divider my-0" />
 
                     <li className="nav-item active">
-                        <a className="nav-link" href="index.html">
+                        <a className="nav-link" href="index.">
                             <i className="fas fa-fw fa-tachometer-alt"></i>
                             <span>Dashboard</span></a>
+                    </li>
+                    <li className="nav-item active">
+                        <a className="nav-link" href="settings.tsx">
+                            <i className="fas fa-cog"></i>
+                            <span>Settings</span></a>
                     </li>
 
                     <hr className="sidebar-divider" />

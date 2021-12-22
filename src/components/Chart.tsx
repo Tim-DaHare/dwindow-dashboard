@@ -27,7 +27,7 @@ const Chart: React.FC = () => {
     ];
 
     const updateSensorData = useCallback(async () => {
-        const response = await fetch('http://raspberrypidehaas.local:8000/data-readings')
+        const response = await fetch('http://127.0.0.1:8000/data-readings/')
         const json = await response.json()
 
         const readings: SensorReading[] = []
@@ -47,16 +47,21 @@ const Chart: React.FC = () => {
         updateSensorData()
     }, [])
 
-    return (
-        <div className="col-xl-12 col-lg-12">
+    const pieChart = () => {
+
+            {/* Pie Chart */}
+            {/* <div className="col-xl-4 col-lg-5">
             <div className="card shadow mb-4">
-                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 className="m-0 font-weight-bold text-primary">Sensor Data Overview</h6>
+                <div
+                    className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 className="m-0 font-weight-bold text-primary">Revenue Sources</h6>
                     <div className="dropdown no-arrow">
-                        <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
-                        <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                        <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                            aria-labelledby="dropdownMenuLink">
                             <div className="dropdown-header">Dropdown Header:</div>
                             <a className="dropdown-item" href="#">Action</a>
                             <a className="dropdown-item" href="#">Another action</a>
@@ -66,20 +71,82 @@ const Chart: React.FC = () => {
                     </div>
                 </div>
                 <div className="card-body">
-                    <div className="chart-area">
-                    <ResponsiveContainer height='100%' width='100%'>
-                        <LineChart
-                            data={sensorData}
-                            margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-                        >
-                            <XAxis dataKey="measured_at" />
-                            <Tooltip />
-                            <CartesianGrid stroke="#f5f5f5" />
-                            <Line type="monotone" dataKey="temprature" stroke="#FF5F7E" yAxisId={0} />
-                            <Line type="monotone" dataKey="eco2" stroke="#FFAB4C" yAxisId={1} />
-                            <Line type="monotone" dataKey="tvoc" stroke="#B000B9" yAxisId={2} />
-                        </LineChart>
-                    </ResponsiveContainer>
+                    <div className="chart-pie pt-4 pb-2">
+                        <canvas id="myPieChart"></canvas>
+                    </div>
+                    <div className="mt-4 text-center small">
+                        <span className="mr-2">
+                            <i className="fas fa-circle text-primary"></i> Direct
+                        </span>
+                        <span className="mr-2">
+                            <i className="fas fa-circle text-success"></i> Social
+                        </span>
+                        <span className="mr-2">
+                            <i className="fas fa-circle text-info"></i> Referral
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div> */}
+
+        return
+    }
+
+
+    return (
+        
+        <div className="col-xl-12 col-lg-12">
+            <div className="card shadow mb-4">
+                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 className="m-0 font-weight-bold text-primary">Sensor Data Overview</h6>
+                    <div className="dropdown no-arrow">
+                        {/* <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a> */}
+                        {/* <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div className="dropdown-header">Dropdown Header:</div>
+                            <a className="dropdown-item" href="#">Action</a>
+                            <a className="dropdown-item" href="#">Another action</a>
+                            <div className="dropdown-divider"></div>
+                            <a className="dropdown-item" href="#">Something else here</a>
+                        </div> */}
+                    
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="card-body col-md-6 col-sm-12">
+                        <div className="chart-area">
+                        <ResponsiveContainer height='100%' width='100%'>
+                            <LineChart
+                                data={sensorData}
+                                margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                            >
+                                <XAxis dataKey="measured_at"/>
+                                <Tooltip />
+                                <CartesianGrid stroke="#f5f5f5" />
+                                <Line type="monotone" dataKey="temprature" stroke="#FF5F7E" yAxisId={0} />
+                                <Line type="monotone" dataKey="eco2" stroke="#FFAB4C" yAxisId={1} />
+                                <Line type="monotone" dataKey="tvoc" stroke="#B000B9" yAxisId={2} />
+                            </LineChart>
+                        </ResponsiveContainer>
+                        </div>
+                    </div>
+                    <div className="card-body col-md-6 col-sm-12">
+                        <div className="chart-area">
+                        <ResponsiveContainer height='100%' width='100%'>
+                            <LineChart
+                                data={sensorData}
+                                margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                            >
+                                <XAxis dataKey="measured_at"/>
+                                <Tooltip />
+                                <CartesianGrid stroke="#f5f5f5" />
+                                <Line type="monotone" dataKey="temprature" stroke="#FF5F7E" yAxisId={0} />
+                                <Line type="monotone" dataKey="eco2" stroke="#FFAB4C" yAxisId={1} />
+                                <Line type="monotone" dataKey="tvoc" stroke="#B000B9" yAxisId={2} />
+                            </LineChart>
+                        </ResponsiveContainer>
+                        </div>
                     </div>
                 </div>
             </div>
