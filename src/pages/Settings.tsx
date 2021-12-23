@@ -1,8 +1,11 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 
 
-
+interface DwindowSettings {
+    temprature_threshold: number,
+    eco2_threshold: number
+}
 
 // const onChangeTemperature = (e) => {
 //     state.temperatureValue = e.target.value
@@ -10,6 +13,7 @@ import { Outlet, Link } from "react-router-dom";
 
 const Settings = () => {
     const [successMessage, setSuccessMessage] = useState<string>('')
+    const [settings, setSettings] = useState<DwindowSettings | null>(null)
 
     const sendSettings = async (e: FormEvent) => {
         e.preventDefault();
@@ -41,56 +45,63 @@ const Settings = () => {
         setTimeout(()=>{
             setSuccessMessage("");
         }, 5000)
-
-        
-    
     }
 
-    
-  return (
-    <>
-        <div className="col-xl-12 col-lg-12">
-            <div className="card shadow mb-4">
-                <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <div className="col-12">
-                        <h6 className="m-0 font-weight-bold text-primary">Settings</h6>
-                        {successMessage && 
-                            <div className="alert alert-success" role="alert">
+    useEffect(() => {
+        (async () => {
+            const response = await fetch('http://127.0.0.1:8000/get_config/')
+            const json = await response.json()
+
+            setSettings(json)
+        })()
+    }, [])
+
+    return (
+        <>
+            <div className="col-xl-12 col-lg-12">
+                <div className="card shadow mb-4">
+                    <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <div className="col-12">
+                            <h6 className="m-0 font-weight-bold text-primary">Settings</h6>
+                            {successMessage && 
+                                <div className="alert alert-success" role="alert">
                                     {successMessage}
-                            </div>
-                        }
-           
-                        <form onSubmit={sendSettings}>
-                            <div className="row">
-                                <div className="col-6 mt-3">
-                                    <label htmlFor="temperatureValue" className="form-label">Temperature threshold value</label>
+                                </div>
+                            }
 
-                                    <div className="input-group mb-3">
-                                        <input type="number" name="temperatureValue" className="form-control" id="temperatureValue" defaultValue="20.1" step=".1"/>
-                                        <span className="input-group-text">°C</span> 
-                                    </div>
-                                </div>
-                                <div className="col-6 mt-3">
-                                    <label htmlFor="co2Value" className="form-label">CO<sup>2</sup> threshold value</label>
+                            {settings && (
+                                <form onSubmit={sendSettings}>
+                                    <div className="row">
+                                        <div className="col-6 mt-3">
+                                            <label htmlFor="temperatureValue" className="form-label">Temperature threshold value</label>
 
-                                    <div className="input-group mb-3">
-                                        <input type="number" className="form-control" name="co2Value" id="co2Value"  defaultValue="400"/>
-                                        <span className="input-group-text">ppm</span> 
+                                            <div className="input-group mb-3">
+                                                <input type="number" name="temperatureValue" className="form-control" id="temperatureValue" defaultValue={settings.temprature_threshold} step=".1"/>
+                                                <span className="input-group-text">°C</span> 
+                                            </div>
+                                        </div>
+                                        <div className="col-6 mt-3">
+                                            <label htmlFor="co2Value" className="form-label">CO<sup>2</sup> threshold value</label>
+
+                                            <div className="input-group mb-3">
+                                                <input type="number" className="form-control" name="co2Value" id="co2Value"  defaultValue={settings.eco2_threshold}/>
+                                                <span className="input-group-text">ppm</span> 
+                                            </div>
+                                        </div>
+                                        <div className="col-12">
+                                            <button type="submit" className="btn btn-dark">
+                                                Set settings
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="col-12">
-                                    <button type="submit" className="btn btn-dark">
-                                        Set settings
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                                </form>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </>
-  )
+        </>
+    )
 };
 
 export default Settings;
