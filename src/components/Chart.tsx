@@ -50,19 +50,7 @@ const Chart: React.FC = () => {
         return function cleanup() {
           clearInterval(timerId);
         };
-      }, []);
-    const data = [
-        { name: 'Page A', uv: 1000, pv: 2400, amt: 2400, uvError: [75, 20] },
-        { name: 'Page B', uv: 300, pv: 4567, amt: 2400, uvError: [90, 40] },
-        { name: 'Page C', uv: 280, pv: 1398, amt: 2400, uvError: 40 },
-        { name: 'Page D', uv: 200, pv: 9800, amt: 2400, uvError: 20 },
-        { name: 'Page E', uv: 278, pv: 9800, amt: 2400, uvError: 28 },
-        { name: 'Page F', uv: 189, pv: 4800, amt: 2400, uvError: [90, 20] },
-        { name: 'Page G', uv: 189, pv: 4800, amt: 2400, uvError: [28, 40] },
-        { name: 'Page H', uv: 189, pv: 4800, amt: 2400, uvError: 28 },
-        { name: 'Page I', uv: 189, pv: 4800, amt: 2400, uvError: 28 },
-        { name: 'Page J', uv: 189, pv: 4800, amt: 2400, uvError: [15, 60] },
-    ];
+    }, []);
 
     const updateSensorData = useCallback(async () => {
         const response = await fetch('http://127.0.0.1:8000/data-readings/')
@@ -80,6 +68,7 @@ const Chart: React.FC = () => {
 
         setSensorData(readings)
     }, [])
+
     const updateLiveWeatherData = useCallback(async () => {
 
         let url = '';
@@ -121,56 +110,7 @@ const Chart: React.FC = () => {
  
     }, [])
 
-    const pieChart = () => {
-
-            {/* Pie Chart */}
-            {/* <div className="col-xl-4 col-lg-5">
-            <div className="card shadow mb-4">
-                <div
-                    className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 className="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                    <div className="dropdown no-arrow">
-                        <a className="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i className="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div className="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                            aria-labelledby="dropdownMenuLink">
-                            <div className="dropdown-header">Dropdown Header:</div>
-                            <a className="dropdown-item" href="#">Action</a>
-                            <a className="dropdown-item" href="#">Another action</a>
-                            <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
-                </div>
-                <div className="card-body">
-                    <div className="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                    <div className="mt-4 text-center small">
-                        <span className="mr-2">
-                            <i className="fas fa-circle text-primary"></i> Direct
-                        </span>
-                        <span className="mr-2">
-                            <i className="fas fa-circle text-success"></i> Social
-                        </span>
-                        <span className="mr-2">
-                            <i className="fas fa-circle text-info"></i> Referral
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div> */}
-
-        return
-    }
-
-
     return (
-
-        
-        
         <div className="col-xl-12 col-lg-12">
             <div className="card shadow mb-4">
                 <div className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
