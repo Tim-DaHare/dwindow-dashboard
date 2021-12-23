@@ -10,15 +10,24 @@ interface SensorReading {
     measured_at: string,
 }
 
-const liveWeatherTemperature = 20;
-const liveWeatherType = "Misty";
-const liveWeatherPPM = 214;
-const liveWeatherAirDensity = 64;
+let liveWeatherReadings = {
+    name: "",
+    mainWeather: "",
+    temp: 0,
+    feelsLike: 0,
+    tempMin: 0,
+    tempMax: 0,
+    pressure: 0,
+    huimidity: 0,
+}
+
+let zipCode = 1336;
 let morningMessage = ""
 
 
 const Chart: React.FC = () => {
     const [sensorData, setSensorData] = useState<SensorReading[]>([]);
+    const [liveWeatherData, setLiveWeatherData] = useState(liveWeatherReadings);
     const [date, setDate] = useState(new Date());
   
     function refreshClock() {
@@ -26,14 +35,17 @@ const Chart: React.FC = () => {
       const currentHour = date.getHours();
 
       if(currentHour < 12) {
-        morningMessage = "Good morning"
+        morningMessage = "Good morning!"
       } else if (currentHour < 18){
-        morningMessage = "Good afternoon"
+        morningMessage = "Good afternoon!"
       } else{
-        morningMessage = "Good evening"
+        morningMessage = "Good evening!"
       }
     }
+
+
     useEffect(() => {
+        refreshClock();
         const timerId = setInterval(refreshClock, 1000);
         return function cleanup() {
           clearInterval(timerId);
@@ -68,9 +80,45 @@ const Chart: React.FC = () => {
 
         setSensorData(readings)
     }, [])
+    const updateLiveWeatherData = useCallback(async () => {
+
+        let url = '';
+        if(zipCode == 0){
+            url = 'https://api.openweathermap.org/data/2.5/weather?q=Netherlands&units=metric&exclude=minutely,daily&appid=12aa733d76825d884a0caf790e3bb128'
+
+        } else {
+            url = 'https://api.openweathermap.org/data/2.5/weather?zip='+zipCode+',nl&units=metric&exclude=minutely,daily&appid=12aa733d76825d884a0caf790e3bb128'
+
+        }
+        const response = await fetch(url)
+        const results = await response.json();
+
+        const liveDataReadings = {
+            name: results.name,
+            mainWeather: results.weather.main,
+            temp: results.main.temp,
+            feelsLike: results.main.feels_like,
+            tempMin: results.main.temp_min,
+            tempMax: results.main.temp_max,
+            pressure: results.main.pressure,
+            huimidity: results.main.humidity,
+        };
+        console.log(liveDataReadings)
+
+        setLiveWeatherData(liveDataReadings)
+    }, [])
 
     useEffect(() => {
-        updateSensorData()
+        updateSensorData();
+        updateLiveWeatherData();
+
+        const interval = setInterval(() => {
+            updateSensorData()
+            updateLiveWeatherData();
+        }, 300000);
+
+        return () => clearInterval(interval);
+ 
     }, [])
 
     const pieChart = () => {
@@ -144,15 +192,23 @@ const Chart: React.FC = () => {
                 <div className="row m-0">
                 <div className="col-md-6 col-sm-12 p-2">
                         <div className="card-body bg-light h-100">
-                            <h2 className="font-weight-bold pl-3 pt-3">{morningMessage}!</h2>
+                            <h2 className="font-weight-bold pl-3 pt-3">{morningMessage}</h2>
                             <h1 className="pl-3">{date.toLocaleTimeString("nl-NL")}</h1>
                             <hr className="sidebar-divider" />
-
-                            <h3 className="font-weight-bold text-info p-3">Live Weather:</h3>
-                            <h5 className="pl-3">{liveWeatherType}</h5>
-                            <h5 className="pl-3">Temperature: {liveWeatherTemperature}°C</h5>
-                            <h5 className="pl-3">Air quality: Good - {liveWeatherPPM}PPM</h5>
-                            <h5 className="pl-3">Air density: {liveWeatherAirDensity}%</h5>
+                            <h3 className="font-weight-bold text-info pl-3 pt-1">Live Weather:</h3>
+                            <h6 className="pl-3 font-weight-bold">{liveWeatherData.name}</h6>
+                            <div className="row">
+                                <div className="col-6">
+                                    <h6 className="pl-3">Temperature: {liveWeatherData.temp}°C</h6>
+                                    <h6 className="pl-3">Feels like: {liveWeatherData.feelsLike}°C</h6>
+                                    <h6 className="pl-3">Min. Temperature: {liveWeatherData.tempMin}°C</h6>
+                                    <h6 className="pl-3">Max. Temperature: {liveWeatherData.tempMax}°C</h6>
+                                </div>
+                                <div className="col-6">
+                                    <h6 className="pl-3">Air Pressure: {liveWeatherData.pressure}hPa</h6>
+                                    <h6 className="pl-3">Humidity: {liveWeatherData.huimidity}%</h6>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="col-md-6 col-sm-12 p-2">
