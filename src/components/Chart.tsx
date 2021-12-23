@@ -145,7 +145,7 @@ const Chart: React.FC = () => {
                                     <h6 className="pl-3">Max. Temperature: {liveWeatherData.tempMax}°C</h6>
                                 </div>
                                 <div className="col-6">
-                                    <h6 className="pl-3">Air Pressure: {liveWeatherData.pressure}hPa</h6>
+                                    <h6 className="pl-3">Air Pressure: {liveWeatherData.pressure} hPa</h6>
                                     <h6 className="pl-3">Humidity: {liveWeatherData.huimidity}%</h6>
                                 </div>
                             </div>
