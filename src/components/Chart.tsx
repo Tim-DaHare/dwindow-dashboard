@@ -163,7 +163,7 @@ const Chart: React.FC = () => {
                                 <XAxis dataKey="measured_at"/>
                                 <Tooltip />
                                 <CartesianGrid stroke="#f5f5f5" />
-                                <Line type="monotone" dataKey="temprature" stroke="#FF5F7E" yAxisId={0} />
+                                <Line isAnimationActive={false} type="monotone" dataKey="temprature" stroke="#FF5F7E" yAxisId={0} />
                             </LineChart>
                         </ResponsiveContainer>
                         </div>
@@ -181,7 +181,7 @@ const Chart: React.FC = () => {
                                     <XAxis dataKey="measured_at"/>
                                     <Tooltip />
                                     <CartesianGrid stroke="#f5f5f5" />
-                                    <Line type="monotone" dataKey="eco2" stroke="#123234" yAxisId={0} />
+                                    <Line isAnimationActive={false} type="monotone" dataKey="eco2" stroke="#123234" yAxisId={0} />
                                 </LineChart>
                             </ResponsiveContainer>
                             </div>
@@ -199,7 +199,7 @@ const Chart: React.FC = () => {
                                     <XAxis dataKey="measured_at"/>
                                     <Tooltip />
                                     <CartesianGrid stroke="#eeeeee" />
-                                    <Line type="monotone" dataKey="tvoc" stroke="#341412" yAxisId={0} />
+                                    <Line isAnimationActive={false} type="monotone" dataKey="tvoc" stroke="#341412" yAxisId={0} />
                                 </LineChart>
                             </ResponsiveContainer>
                             </div>
