@@ -1,7 +1,7 @@
 import { read } from 'fs';
 import { report } from 'process';
 import React, { useCallback, useEffect, useState } from 'react'
-import { CartesianGrid, Line, LineChart, Tooltip, XAxis, ResponsiveContainer } from 'recharts';
+import { CartesianGrid, Line, LineChart, Tooltip, XAxis, ResponsiveContainer, YAxis } from 'recharts';
 
 interface SensorReading {
     temprature: number,
@@ -104,7 +104,7 @@ const Chart: React.FC = () => {
         const interval = setInterval(() => {
             updateSensorData()
             updateLiveWeatherData();
-        }, 300000);
+        }, 3000);
 
         return () => clearInterval(interval);
  
@@ -160,7 +160,8 @@ const Chart: React.FC = () => {
                                 data={sensorData}
                                 margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                             >
-                                <XAxis dataKey="measured_at"/>
+                                <XAxis dataKey="measured_at" reversed/>
+                                <YAxis type="number" domain={[0, 40]}/>
                                 <Tooltip />
                                 <CartesianGrid stroke="#f5f5f5" />
                                 <Line isAnimationActive={false} type="monotone" dataKey="temprature" stroke="#FF5F7E" yAxisId={0} />
@@ -178,7 +179,8 @@ const Chart: React.FC = () => {
                                     data={sensorData}
                                     margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                                 >
-                                    <XAxis dataKey="measured_at"/>
+                                    <XAxis dataKey="measured_at" reversed/>
+                                    <YAxis type="number" domain={[300, 500]}/>
                                     <Tooltip />
                                     <CartesianGrid stroke="#f5f5f5" />
                                     <Line isAnimationActive={false} type="monotone" dataKey="eco2" stroke="#123234" yAxisId={0} />
@@ -196,7 +198,8 @@ const Chart: React.FC = () => {
                                     data={sensorData}
                                     margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                                 >
-                                    <XAxis dataKey="measured_at"/>
+                                    <XAxis dataKey="measured_at" reversed/>
+                                    <YAxis type="number" domain={[0, 200]}/>
                                     <Tooltip />
                                     <CartesianGrid stroke="#eeeeee" />
                                     <Line isAnimationActive={false} type="monotone" dataKey="tvoc" stroke="#341412" yAxisId={0} />
