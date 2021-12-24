@@ -29,7 +29,8 @@ const Chart: React.FC = () => {
     const [sensorData, setSensorData] = useState<SensorReading[]>([]);
     const [liveWeatherData, setLiveWeatherData] = useState(liveWeatherReadings);
     const [date, setDate] = useState(new Date());
-  
+    const [averages, setAverages] = useState(null)
+
     function refreshClock() {
       setDate(new Date());
       const currentHour = date.getHours();
@@ -67,6 +68,7 @@ const Chart: React.FC = () => {
         }
 
         setSensorData(readings)
+        setAverages(json['averages'])
     }, [])
 
     const updateLiveWeatherData = useCallback(async () => {
@@ -154,6 +156,7 @@ const Chart: React.FC = () => {
                     <div className="col-md-6 col-sm-12 p-2">
                     <div className="card-body bg-light h-100">
                         <h6 className="font-weight-bold text-primary p-3">Temperature (°C)</h6>
+                        <h6 className="pl-3 pb-3">Gemiddelde van afgelopen 30 minuten: {averages && Math.round(averages['temprature'])}</h6>
                         <div className="chart-area">
                         <ResponsiveContainer height='100%' width='100%'>
                             <LineChart
@@ -173,6 +176,7 @@ const Chart: React.FC = () => {
                     <div className="col-md-6 col-sm-12 p-2">
                         <div className="card-body bg-light h-100">
                             <h6 className="font-weight-bold text-primary p-3">CO<sup>2</sup> concentration (eCO<sup>2</sup>)</h6>
+                            <h6 className="pl-3 pb-3">Gemiddelde van afgelopen 30 minuten: {averages && Math.round(averages['eco2'])}</h6>
                             <div className="chart-area">
                             <ResponsiveContainer height='100%' width='100%'>
                                 <LineChart
@@ -192,6 +196,7 @@ const Chart: React.FC = () => {
                     <div className="col-md-6 col-sm-12 p-2">
                         <div className="card-body bg-light h-100">
                             <h6 className="font-weight-bold text-primary p-3">Air Quality (TVOC)</h6>
+                            <h6 className="pl-3 pb-3">Gemiddelde van afgelopen 30 minuten: {averages && Math.round(averages['tvoc'])}</h6>
                             <div className="chart-area">
                             <ResponsiveContainer height='100%' width='100%'>
                                 <LineChart
