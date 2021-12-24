@@ -73,10 +73,10 @@ const Chart: React.FC = () => {
 
         let url = '';
         if(zipCode == 0){
-            url = 'https://api.openweathermap.org/data/2.5/weather?q=Netherlands&units=metric&exclude=minutely,daily&appid=12aa733d76825d884a0caf790e3bb128'
+            url = 'https://api.openweathermap.org/data/2.5/weather?q=Netherlands&units=metric&exclude=minutely,daily&appid=d7e4c920bf451acf69831342e79fe06f'
 
         } else {
-            url = 'https://api.openweathermap.org/data/2.5/weather?zip='+zipCode+',nl&units=metric&exclude=minutely,daily&appid=12aa733d76825d884a0caf790e3bb128'
+            url = 'https://api.openweathermap.org/data/2.5/weather?zip='+zipCode+',nl&units=metric&exclude=minutely,daily&appid=d7e4c920bf451acf69831342e79fe06f'
 
         }
         const response = await fetch(url)
